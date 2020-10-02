@@ -38,7 +38,15 @@
         inline void LightingCustom_GI (SurfaceOutputStandard s, UnityGIInput data, inout UnityGI gi)
 		{
 			gi = UnityGlobalIllumination (data, 1.0, s.Normal);
-		} 
+		}
+
+        inline float3 CorrectColorSpace(float3 color)
+        {
+            #ifdef UNITY_COLORSPACE_GAMMA
+            color = GammaToLinearSpace(color);
+            #endif
+            return color;
+        }
 
 		inline float4 LightingCustom(SurfaceOutputStandard s, float3 viewDir, UnityGI gi)
         {
@@ -56,10 +64,8 @@
             // Albedo comes from a texture tinted by color
             float3 linearAlbedo = tex2D (_MainTex, IN.uv_MainTex).rgb;
             float3 linearTint = _Color;
-            #ifdef UNITY_COLORSPACE_GAMMA
-            linearAlbedo = GammaToLinearSpace(linearAlbedo);
-            linearTint = GammaToLinearSpace(linearTint);
-            #endif
+            linearAlbedo = CorrectColorSpace(linearAlbedo);
+            linearTint = CorrectColorSpace(linearTint);
             o.Albedo = linearAlbedo * linearTint;
             // Metallic and smoothness come from slider variables
             o.Metallic = 0.0f;

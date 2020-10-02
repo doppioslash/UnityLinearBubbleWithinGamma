@@ -7,7 +7,7 @@ Shader "Hidden/ImageEffectToGamma"
 	}
 	SubShader {
 		Pass{
-			name "DOFBlend"
+			name "ToGamma"
 			ZTest Always Cull Off ZWrite Off Lighting Off
 			Fog { Mode off }
 			Blend Off 
@@ -19,6 +19,7 @@ Shader "Hidden/ImageEffectToGamma"
 			//to make tex2Dlod work
 			#pragma glsl 
 			#include "UnityCG.cginc"
+			#include "Includes/ColorConversion.cginc"
 			
 			uniform sampler2D _MainTex;
 			uniform float _InnerVignetting;
