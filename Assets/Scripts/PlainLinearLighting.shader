@@ -16,6 +16,7 @@
         #pragma target 4.0
 
         #include "UnityPBSLighting.cginc"
+		#include "Includes/ColorConversion.cginc"
 
         sampler2D _MainTex;
 
@@ -43,7 +44,7 @@
         inline float3 CorrectColorSpace(float3 color)
         {
             #ifdef UNITY_COLORSPACE_GAMMA
-            color = GammaToLinearSpace(color);
+            color = SRGBToLinear(color);
             #endif
             return color;
         }
@@ -52,7 +53,7 @@
         {
             UnityLight light = gi.light;
             #ifdef UNITY_COLORSPACE_GAMMA
-            float3 lightColor = GammaToLinearSpace(light.color);
+            float3 lightColor = CorrectColorSpace(light.color);
             #else
             float3 lightColor = light.color;
             #endif

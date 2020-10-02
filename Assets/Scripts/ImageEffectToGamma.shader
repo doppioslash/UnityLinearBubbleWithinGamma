@@ -37,7 +37,7 @@ Shader "Hidden/ImageEffectToGamma"
 				
 				float4 colour = tex2D( _MainTex, i.uv );
 				#ifdef UNITY_COLORSPACE_GAMMA
-	    		colour = float4(LinearToGammaSpace(colour.rgb), 1.0);
+	    		colour = float4(LinearToSRGB(colour.rgb), 1.0);
 				#endif
 	    		return colour;
 			}
